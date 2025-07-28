@@ -1,5 +1,9 @@
-import React from 'react'
+import { PageWrapper } from '@/components/page-wrapper'
 
-export default function DashboardPage() {
-  return <div>DashboardPage</div>
+export default async function Page() {
+  return (
+    <PageWrapper breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }]}>
+      <h1>Notebooks</h1>
+    </PageWrapper>
+  )
 }
