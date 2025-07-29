@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
 import { Toaster } from '@/components/ui/sonner'
-
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { ThemeProvider } from '@/components/theme-provider'
 import { APP_DESCRIPTION, APP_NAME } from '@/lib/constants'
 
@@ -36,26 +36,28 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <Toaster
-            position='bottom-center'
-            toastOptions={{
-              unstyled: true,
-              classNames: {
-                error: 'text-red-600 bg-white border rounded-md p-2',
-                success: 'text-green-700 bg-white border rounded-md p-2',
-                warning: 'text-yellow-700 bg-white border rounded-md p-2',
-                info: 'text-blue-700 bg-white border rounded-md p-2'
-              }
-            }}
-          />
-        </ThemeProvider>
+        <NuqsAdapter>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <Toaster
+              position='bottom-center'
+              toastOptions={{
+                unstyled: true,
+                classNames: {
+                  error: 'text-red-600 bg-white border rounded-md p-2',
+                  success: 'text-green-700 bg-white border rounded-md p-2',
+                  warning: 'text-yellow-700 bg-white border rounded-md p-2',
+                  info: 'text-blue-700 bg-white border rounded-md p-2'
+                }
+              }}
+            />
+          </ThemeProvider>
+        </NuqsAdapter>
       </body>
     </html>
   )
