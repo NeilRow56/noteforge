@@ -1,36 +1,33 @@
-import { CreateNoteButton } from '@/app/dashboard/_components/create-note-button'
-import NoteCard from '@/app/dashboard/_components/note-card'
 import { PageWrapper } from '@/components/page-wrapper'
-import { getNotebookById } from '@/server/notebooks'
+import RichTextEditor from '@/components/rich-text-editor'
+import { getNoteById } from '@/server/notes'
+import { JSONContent } from '@tiptap/react'
 
 type Params = Promise<{
-  notebookId: string
+  noteId: string
 }>
 
-export default async function NotebookPage({ params }: { params: Params }) {
-  const { notebookId } = await params
+export default async function NotePage({ params }: { params: Params }) {
+  const { noteId } = await params
 
-  const { notebook } = await getNotebookById(notebookId)
+  const { note } = await getNoteById(noteId)
 
   return (
     <PageWrapper
       breadcrumbs={[
         { label: 'Dashboard', href: '/dashboard' },
         {
-          label: notebook?.name ?? 'Notebook',
-          href: `/dashboard/notebook/${notebookId}`
-        }
+          label: note?.notebook?.name ?? 'Notebook',
+          href: `/dashboard/notebook/${note?.notebook?.id}`
+        },
+        { label: note?.title ?? 'Note', href: `/dashboard/note/${noteId}` }
       ]}
     >
-      <h1>{notebook?.name}</h1>
-
-      <CreateNoteButton notebookId={notebookId} />
-
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-        {notebook?.notes?.map(note => (
-          <NoteCard key={note.id} note={note} />
-        ))}
-      </div>
+      <h1>{note?.title}</h1>
+      <RichTextEditor
+        content={note?.content as JSONContent[]}
+        noteId={noteId}
+      />
     </PageWrapper>
   )
 }
