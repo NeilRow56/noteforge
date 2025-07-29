@@ -110,12 +110,12 @@ export const HeroHeader = () => {
                   <ModeSwitcher />
                 </div>
                 <Button asChild variant='outline' size='sm'>
-                  <Link href='/login'>
+                  <Link href='/auth/sign-in'>
                     <span>Login</span>
                   </Link>
                 </Button>
                 <Button asChild size='sm'>
-                  <Link href='/signup'>
+                  <Link href='/auth/sign-up'>
                     <span>Sign Up</span>
                   </Link>
                 </Button>
