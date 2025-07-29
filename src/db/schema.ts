@@ -85,9 +85,12 @@ export const notebookRelations = relations(notebooks, ({ many, one }) => ({
   })
 }))
 
+// Once created a Notebook can have many notes
 export type Notebook = typeof notebooks.$inferSelect & {
   notes: Note[]
 }
+
+//Creating a Notebook
 export type InsertNotebook = typeof notebooks.$inferInsert
 
 export const notes = pgTable('notes', {
