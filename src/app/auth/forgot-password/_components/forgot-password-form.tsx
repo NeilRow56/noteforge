@@ -21,8 +21,7 @@ import { z } from 'zod/v4'
 import { toast } from 'sonner'
 import { useState } from 'react'
 import { Loader2 } from 'lucide-react'
-
-import { authClient } from '@/lib/auth-client'
+import { forgetPassword } from '@/lib/auth-client'
 
 const formSchema = z.object({
   email: z.email()
@@ -44,7 +43,7 @@ export function ForgotPasswordForm({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setPending(true)
 
-    const { error } = await authClient.forgetPassword({
+    const { error } = await forgetPassword({
       email: values.email,
       redirectTo: '/auth/reset-password'
     })
