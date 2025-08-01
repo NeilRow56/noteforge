@@ -11,6 +11,7 @@ import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
+import Highlight from '@tiptap/extension-highlight'
 import Text from '@tiptap/extension-text'
 import { Button } from '@/components/ui/button'
 import {
@@ -32,10 +33,9 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
-  AlignJustify,
-  Plus,
   ChevronDown,
-  PrinterIcon
+  PrinterIcon,
+  Highlighter
 } from 'lucide-react'
 import { updateNote } from '@/server/notes'
 
@@ -49,6 +49,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
     extensions: [
       StarterKit,
       Underline,
+      Highlight,
       Document,
       Paragraph,
       Text,
@@ -150,6 +151,8 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         canStrike: ctx.editor?.can().chain().focus().toggleStrike().run(),
         isUnderline: ctx.editor?.isActive('underline'),
         canUnderline: ctx.editor?.can().chain().focus().toggleUnderline().run(),
+        isHighlight: ctx.editor?.isActive('highlight'),
+        canHighlight: ctx.editor?.can().chain().focus().toggleHighlight().run(),
         isCode: ctx.editor?.isActive('code'),
         canCode: ctx.editor?.can().chain().focus().toggleCode().run(),
         isParagraph: ctx.editor?.isActive('paragraph'),
@@ -196,9 +199,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         >
           <Redo className='h-4 w-4' />
         </Button>
-
         <div className='bg-border mx-1 h-6 w-px' />
-
         {/* Heading Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -244,7 +245,6 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-
         {/* Lists */}
         <Button
           variant='ghost'
@@ -270,9 +270,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         >
           <ListOrdered className='h-4 w-4' />
         </Button>
-
         <div className='bg-border mx-1 h-6 w-px' />
-
         {/* Text Formatting */}
         <Button
           variant='ghost'
@@ -339,11 +337,8 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         >
           <Underline2 className='h-4 w-4' />
         </Button>
-
         <div className='bg-border mx-1 h-6 w-px' />
-
         <div className='bg-border mx-1 h-6 w-px' />
-
         {/* Alignment */}
         <Button
           variant='ghost'
@@ -373,6 +368,29 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         >
           <AlignRight className='h-4 w-4' />
         </Button>
+        <Button
+          variant='ghost'
+          size='sm'
+          onClick={() => editor?.chain().focus().setTextAlign('right').run()}
+          className={
+            editor?.isActive({ textAlign: 'right' }) ? 'is-active' : ''
+          }
+        >
+          <AlignRight className='h-4 w-4' />
+        </Button>
+        <Button
+          variant='ghost'
+          size='sm'
+          onClick={() => editor?.chain().focus().toggleHighlight().run()}
+          disabled={!editorState?.canHighlight}
+          className={`hover:bg-accent size-8 p-0 ${
+            editorState?.isHighlight
+              ? 'bg-accent text-accent-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
+        >
+          <Highlighter className='h-4 w-4' />
+        </Button>
 
         <Button
           variant='ghost'
@@ -382,7 +400,6 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         >
           <PrinterIcon className='h-4 w-4' />
         </Button>
-
         {/* Spacer */}
         <div className='flex-1' />
       </div>
