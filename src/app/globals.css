@@ -396,3 +396,12 @@ img {
     cursor: col-resize;
   }
 }
+
+@media print {
+  /* All your print styles go here. This is an example: */
+  #header,
+  #footer,
+  #nav {
+    display: none !important;
+  }
+}

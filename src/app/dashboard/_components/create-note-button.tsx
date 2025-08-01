@@ -80,7 +80,7 @@ export const CreateNoteButton = ({ notebookId }: { notebookId: string }) => {
         <DialogHeader>
           <DialogTitle>Create Note</DialogTitle>
           <DialogDescription>
-            Create a new note to store your notes.
+            Create a new note to store your individual query.
           </DialogDescription>
         </DialogHeader>
 

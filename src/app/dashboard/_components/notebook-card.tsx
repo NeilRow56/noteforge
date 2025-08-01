@@ -60,7 +60,7 @@ export default function NotebookCard({ notebook }: NotebookCardProps) {
         <CardTitle>{notebook.name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p>{notebook.notes?.length ?? 0} notes</p>
+        <p>{notebook.notes?.length ?? 0} item(s)</p>
       </CardContent>
       <CardFooter className='flex justify-end gap-2'>
         <Link href={`/dashboard/notebook/${notebook.id}`}>

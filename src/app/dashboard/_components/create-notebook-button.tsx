@@ -80,13 +80,13 @@ export const CreateNotebookButton = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className='w-max'>Create Notebook</Button>
+        <Button className='w-max'>Create Query Section</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Notebook</DialogTitle>
+          <DialogTitle>Create Query Section</DialogTitle>
           <DialogDescription>
-            Create a new notebook to store your notes.
+            Create a new section to store your notes.
           </DialogDescription>
         </DialogHeader>
 
