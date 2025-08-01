@@ -10,6 +10,7 @@ import { ImageResize } from 'tiptap-extension-resize-image'
 
 export const Editor = () => {
   const { setEditor } = useEditorStore()
+
   const editor = useEditor({
     onCreate({ editor }) {
       setEditor(editor)
@@ -44,6 +45,7 @@ export const Editor = () => {
     },
     extensions: [
       StarterKit,
+
       Image,
       ImageResize,
       TaskList,

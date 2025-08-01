@@ -9,6 +9,8 @@ import {
 import StarterKit from '@tiptap/starter-kit'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
+import Underline from '@tiptap/extension-underline'
+import TextAlign from '@tiptap/extension-text-align'
 import Text from '@tiptap/extension-text'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,8 +26,7 @@ import {
   Italic,
   Strikethrough,
   Code,
-  Underline,
-  Link,
+  Underline as Underline2,
   List,
   ListOrdered,
   AlignLeft,
@@ -34,8 +35,7 @@ import {
   AlignJustify,
   Plus,
   ChevronDown,
-  Superscript,
-  Subscript
+  PrinterIcon
 } from 'lucide-react'
 import { updateNote } from '@/server/notes'
 
@@ -46,7 +46,17 @@ interface RichTextEditorProps {
 
 const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
   const editor = useEditor({
-    extensions: [StarterKit, Document, Paragraph, Text],
+    extensions: [
+      StarterKit,
+      Underline,
+      Document,
+      Paragraph,
+      Text,
+      TextAlign.configure({
+        types: ['heading', 'paragraph']
+      })
+    ],
+
     immediatelyRender: false,
     autofocus: true,
     editable: true,
@@ -138,6 +148,8 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         canItalic: ctx.editor?.can().chain().focus().toggleItalic().run(),
         isStrike: ctx.editor?.isActive('strike'),
         canStrike: ctx.editor?.can().chain().focus().toggleStrike().run(),
+        isUnderline: ctx.editor?.isActive('underline'),
+        canUnderline: ctx.editor?.can().chain().focus().toggleUnderline().run(),
         isCode: ctx.editor?.isActive('code'),
         canCode: ctx.editor?.can().chain().focus().toggleCode().run(),
         isParagraph: ctx.editor?.isActive('paragraph'),
@@ -317,35 +329,18 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         <Button
           variant='ghost'
           size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
+          onClick={() => editor?.chain().focus().toggleUnderline().run()}
+          disabled={!editorState?.canUnderline}
+          className={`hover:bg-accent size-8 p-0 ${
+            editorState?.isUnderline
+              ? 'bg-accent text-accent-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          }`}
         >
-          <Underline className='h-4 w-4' />
+          <Underline2 className='h-4 w-4' />
         </Button>
 
         <div className='bg-border mx-1 h-6 w-px' />
-
-        {/* Additional Tools */}
-        <Button
-          variant='ghost'
-          size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
-        >
-          <Link className='h-4 w-4' />
-        </Button>
-        <Button
-          variant='ghost'
-          size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
-        >
-          <Superscript className='h-4 w-4' />
-        </Button>
-        <Button
-          variant='ghost'
-          size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
-        >
-          <Subscript className='h-4 w-4' />
-        </Button>
 
         <div className='bg-border mx-1 h-6 w-px' />
 
@@ -353,44 +348,43 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
         <Button
           variant='ghost'
           size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
+          onClick={() => editor?.chain().focus().setTextAlign('left').run()}
+          className={editor?.isActive({ textAlign: 'left' }) ? 'is-active' : ''}
         >
           <AlignLeft className='h-4 w-4' />
         </Button>
         <Button
           variant='ghost'
           size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
+          onClick={() => editor?.chain().focus().setTextAlign('center').run()}
+          className={
+            editor?.isActive({ textAlign: 'center' }) ? 'is-active' : ''
+          }
         >
           <AlignCenter className='h-4 w-4' />
         </Button>
         <Button
           variant='ghost'
           size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
+          onClick={() => editor?.chain().focus().setTextAlign('right').run()}
+          className={
+            editor?.isActive({ textAlign: 'right' }) ? 'is-active' : ''
+          }
         >
           <AlignRight className='h-4 w-4' />
         </Button>
+
         <Button
           variant='ghost'
           size='sm'
           className='text-muted-foreground hover:text-foreground hover:bg-accent size-8 p-0'
+          onClick={() => window.print()}
         >
-          <AlignJustify className='h-4 w-4' />
+          <PrinterIcon className='h-4 w-4' />
         </Button>
 
         {/* Spacer */}
         <div className='flex-1' />
-
-        {/* Add Button */}
-        <Button
-          variant='ghost'
-          size='sm'
-          className='text-muted-foreground hover:text-foreground hover:bg-accent h-8 gap-1 px-2'
-        >
-          <Plus className='h-4 w-4' />
-          Add
-        </Button>
       </div>
 
       {/* Editor Content */}
